@@ -33,11 +33,11 @@ private:
     QVBoxLayout* widgetLayout;
     int m_frameState;
     void determineIcon();
+    QObject* m_parent;
 
 public:
-    CollapsibleFrame();
     ~CollapsibleFrame();
-    CollapsibleFrame(QString headerText);
+    CollapsibleFrame(QObject *parent, QString headerText);
     void addWidget(QWidget *widget);
     void addLayout(QLayout *layout);
     enum { OPEN, CLOSED };

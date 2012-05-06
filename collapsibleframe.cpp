@@ -16,60 +16,52 @@
 
 #include "collapsibleframe.h"
 
-CollapsibleFrame::CollapsibleFrame()
-{
-    m_frameState = CLOSED;
-    determineIcon();
-    m_headerArea = new QWidget;
-    m_widgetArea = new QWidget;
-    icon = new ExtendedQLabel;
-    icon->setPixmap(m_collapseIcon);
-    connect(icon, SIGNAL(clicked()), this, SLOT(changeState()));
-    QLabel* headerTextLabel = new QLabel;
-    headerTextLabel->setText(m_headerText);
-    QVBoxLayout* mainLayout = new QVBoxLayout;
-    QVBoxLayout* widgetLayout = new QVBoxLayout;
-    m_widgetArea->setLayout(widgetLayout);
-    m_widgetArea->show();
-    QHBoxLayout* headerLayout = new QHBoxLayout;
-    headerLayout->addWidget(icon);
-    headerLayout->addWidget(headerTextLabel);
-    m_headerArea->setLayout(headerLayout);
-    m_headerArea->show();
-    mainLayout->addWidget(m_headerArea);
-    //mainLayout->addLayout(headerLayout);
-    mainLayout->addWidget(m_widgetArea);
-    setLayout(mainLayout);
-    show();
-}
-
-CollapsibleFrame::CollapsibleFrame(QString headerText)
+CollapsibleFrame::CollapsibleFrame(QObject *parent, QString headerText)
 {
     m_headerText = headerText;
+    m_parent = parent;
     m_frameState = CLOSED;
 
     m_headerArea = new QWidget;
     m_widgetArea = new QWidget;
+    m_headerArea->setMaximumHeight(20);
+    m_widgetArea->setMaximumHeight(1000);
+    this->setMaximumHeight(1000);
+    this->setMinimumHeight(20);
+
+    this->setStyleSheet("QWidget { border: 1px solid #000000; }");
+
     icon = new ExtendedQLabel;
-    icon->setMaximumSize(13, 13);
+    icon->setMaximumSize(15, 15);
     icon->setPixmap(m_collapseIcon);
     connect(icon, SIGNAL(clicked()), this, SLOT(changeState()));
+
     headerTextLabel = new QLabel;
     headerTextLabel->setText(m_headerText);
-    QVBoxLayout* mainLayout = new QVBoxLayout;
-    widgetLayout = new QVBoxLayout;
+
     ExtendedQLabel* test = new ExtendedQLabel;
     test->setText("Testing");
-    test->setMaximumSize(50,30);
-    widgetLayout->addWidget(test);
+    test->setMaximumSize(50,20);
+
+    widgetLayout = new QVBoxLayout;
+    widgetLayout->setMargin(0);
+//    widgetLayout->setSpacing(0);
     m_widgetArea->setLayout(widgetLayout);
+//    m_widgetArea->setMaximumHeight(20);
+    widgetLayout->addWidget(test); /*, 0, Qt::AlignTop | Qt:: AlignLeft);*/
+
     QHBoxLayout* headerLayout = new QHBoxLayout;
-    headerLayout->addWidget(icon);
-    headerLayout->addWidget(headerTextLabel);
+    headerLayout->setMargin(0);
+    headerLayout->addWidget(icon); /*, 0, Qt::AlignTop | Qt:: AlignLeft);*/
+    headerLayout->addWidget(headerTextLabel); /*, 0, Qt::AlignTop | Qt:: AlignLeft);*/
     m_headerArea->setLayout(headerLayout);
-    m_headerArea->show();
-    mainLayout->addWidget(m_headerArea);
-    mainLayout->addWidget(m_widgetArea);
+
+    QVBoxLayout* mainLayout = new QVBoxLayout;
+    mainLayout->setMargin(0);
+    mainLayout->setSpacing(0);
+    mainLayout->addWidget(m_headerArea);/*, 0, Qt::AlignTop | Qt:: AlignLeft);*/
+    mainLayout->addWidget(m_widgetArea);/*, 0, Qt::AlignTop | Qt:: AlignLeft);*/
+
     setLayout(mainLayout);
     show();
     determineIcon();

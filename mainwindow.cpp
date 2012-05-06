@@ -19,11 +19,23 @@
 
 MainWindow::MainWindow(QWidget *parent)
 {
-    QHBoxLayout* layout = new QHBoxLayout;
-    CollapsibleFrame* cf = new CollapsibleFrame("Test");
-    CollapsibleFrame* cf2 = new CollapsibleFrame("Test2");
+//    setWindowFlags(
+//        #ifdef Q_OS_MAC
+//            Qt::SubWindow | // This type flag is the second point
+//        #else
+//            Qt::Tool |
+//        #endif
+//            Qt::WindowSystemMenuHint |
+//            Qt::WindowStaysOnTopHint
+//        );
+    QVBoxLayout* layout = new QVBoxLayout;
+    layout->setMargin(0);
+    CollapsibleFrame* cf = new CollapsibleFrame(this, "Test");
+    CollapsibleFrame* cf2 = new CollapsibleFrame(cf, "Test2");
+    CollapsibleFrame* cf3 = new CollapsibleFrame(this, "Test3");
     cf->addWidget(cf2);
     layout->addWidget(cf);
+    layout->addWidget(cf3);
     this->setLayout(layout);
 }
 
